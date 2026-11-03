@@ -1,0 +1,10 @@
+{
+  "name": "La Mia Cantina",
+  "short_name": "Cantina",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f1e8",
+  "theme_color": "#541d2b",
+  "description": "La tua cantina personale e il diario delle degustazioni."
+}

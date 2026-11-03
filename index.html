@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#541d2b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="La Mia Cantina">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>La Mia Cantina</title>
+<style>
+:root{--wine:#541d2b;--wine2:#762d3e;--cream:#f7f1e8;--paper:#fffdf9;--ink:#30252a;--muted:#796d70;--gold:#b18a51;--line:#e8ddd2;--green:#36745b;--red:#a33b42}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+header{background:linear-gradient(135deg,var(--wine),#35121c);color:#fff;padding:24px 18px 22px;border-radius:0 0 24px 24px}
+.brand{font-family:Georgia,serif;font-size:27px;letter-spacing:.2px}.tag{opacity:.8;font-size:12px;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:19px}.stat{background:#ffffff18;border:1px solid #ffffff25;border-radius:13px;padding:10px 8px}.stat b{display:block;font-size:21px}.stat span{font-size:11px;opacity:.85}
+main{max-width:760px;margin:auto;padding:16px}.tabs{display:flex;gap:7px;overflow:auto;padding:3px 0 13px}.tab{border:1px solid var(--line);background:var(--paper);color:var(--wine);border-radius:999px;padding:9px 14px;white-space:nowrap;font-weight:600}.tab.active{background:var(--wine);color:white;border-color:var(--wine)}
+.toolbar{display:flex;gap:8px;margin-bottom:12px}.toolbar input{flex:1;min-width:0}.field,input,select,textarea{font:inherit;border:1px solid var(--line);border-radius:11px;padding:11px;background:#fff;color:var(--ink);width:100%}textarea{min-height:76px;resize:vertical}label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:12px 0 5px}
+button{cursor:pointer}.primary{background:var(--wine);color:#fff;border:0;border-radius:12px;padding:12px 15px;font-weight:700}.secondary{background:#fff;border:1px solid var(--line);color:var(--wine);border-radius:11px;padding:10px 12px;font-weight:600}.danger{color:var(--red);border-color:#e6c6c6}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 3px 12px #3d20200a}.row{display:flex;gap:12px;align-items:flex-start}.thumb{width:64px;height:78px;object-fit:cover;border-radius:9px;background:#eee4d9;flex-shrink:0}.wine-name{font: bold 18px Georgia,serif;color:var(--wine)}.meta{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}.badge{display:inline-block;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:700;background:#e6f1eb;color:var(--green);margin-top:7px}.badge.drunk{background:#f7e8e8;color:var(--red)}.card-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.card-actions button{font-size:12px}
+.empty{text-align:center;color:var(--muted);padding:35px 15px}.empty strong{display:block;color:var(--wine);font:20px Georgia,serif;margin-bottom:6px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fffdf9ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:center;z-index:5}.bottom button{width:min(100%,720px);font-size:16px;padding:14px}
+.modal{position:fixed;inset:0;background:#180b0dbb;display:none;align-items:flex-end;justify-content:center;z-index:10;padding:12px}.modal.show{display:flex}.sheet{background:var(--cream);width:min(100%,650px);max-height:92vh;overflow:auto;border-radius:22px;padding:18px}.sheet h2{font:24px Georgia,serif;color:var(--wine);margin:2px 0 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.wide{grid-column:1/-1}.closebar{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:transparent;font-size:26px;color:var(--wine)}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin:8px 0}.history-item{border-left:3px solid var(--gold);padding:7px 10px;margin:9px 0;background:#fff;border-radius:0 9px 9px 0;font-size:13px}.hidden{display:none!important}.section-title{font:22px Georgia,serif;color:var(--wine);margin:8px 0}
+@media(min-width:600px){.modal{align-items:center}.sheet{border-radius:22px}.stats{max-width:470px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">🍷 La Mia Cantina</div><div class="tag">La tua collezione, sempre con te.</div>
+ <div class="stats"><div class="stat"><b id="statAvailable">0</b><span>BOTTIGLIE DISPONIBILI</span></div><div class="stat"><b id="statConsumed">0</b><span>BOTTIGLIE BEVUTE</span></div><div class="stat"><b id="statWines">0</b><span>ETICHETTE</span></div></div>
+</header>
+<main>
+ <nav class="tabs">
+  <button class="tab active" data-view="cellar">La mia cantina</button>
+  <button class="tab" data-view="history">Vini bevuti</button>
+  <button class="tab" data-view="favorites">Preferiti</button>
+  <button class="tab" data-view="backup">Backup</button>
+ </nav>
+ <div id="listView">
+  <div class="toolbar"><input id="search" placeholder="Cerca vino, cantina, zona…"><select id="filterType" style="max-width:125px"><option value="">Tutti i tipi</option><option>Rosso</option><option>Bianco</option><option>Rosato</option><option>Spumante</option><option>Frizzante</option><option>Altro</option></select></div>
+  <div id="cards"></div>
+ </div>
+ <section id="backupView" class="hidden">
+  <h2 class="section-title">I tuoi dati, al sicuro</h2>
+  <div class="card"><b>Esporta una copia della cantina</b><p class="meta">Salva un file di backup con vini, quantità, fotografie e degustazioni. Conserva il file in iCloud Drive o in un altro posto sicuro.</p><button class="primary" id="exportBtn">Esporta backup</button></div>
+  <div class="card"><b>Ripristina un backup</b><p class="meta">Importa un backup creato in precedenza. I dati attuali verranno sostituiti.</p><input type="file" id="importFile" accept="application/json"><button class="secondary danger" id="importBtn">Ripristina backup selezionato</button></div>
+  <p class="hint">I dati vengono conservati in questo browser sul dispositivo. Non cancellare i dati di Safari senza prima esportare un backup. Questa prima versione non sincronizza automaticamente altri dispositivi.</p>
+ </section>
+</main>
+<div class="bottom"><button class="primary" id="addBtn">＋ Aggiungi un vino</button></div>
+
+<div class="modal" id="wineModal"><div class="sheet">
+ <div class="closebar"><h2 id="formTitle">Aggiungi un vino</h2><button class="close" data-close="wineModal">×</button></div>
+ <form id="wineForm">
+ <input type="hidden" id="wineId">
+ <div class="grid">
+  <div class="wide"><label>Nome del vino *</label><input id="name" required placeholder="Es. Barolo DOCG"></div>
+  <div><label>Cantina / produttore</label><input id="producer" placeholder="Nome cantina"></div>
+  <div><label>Annata</label><input id="vintage" inputmode="numeric" placeholder="2021"></div>
+  <div><label>Colore / tipologia</label><select id="type"><option value="">Da scegliere</option><option>Rosso</option><option>Bianco</option><option>Rosato</option><option>Spumante</option><option>Frizzante</option><option>Altro</option></select></div>
+  <div><label>Stile</label><select id="style"><option value="">Da scegliere</option><option>Fermo</option><option>Frizzante</option><option>Spumante</option><option>Passito</option><option>Dolce</option><option>Altro</option></select></div>
+  <div><label>Vitigno</label><input id="grape" placeholder="Nebbiolo, Sangiovese…"></div>
+  <div><label>Regione</label><input id="region" placeholder="Piemonte"></div>
+  <div class="wide"><label>Zona / denominazione / valle</label><input id="area" placeholder="Es. Langhe, Valpolicella…"></div>
+  <div><label>Bottiglie acquistate</label><input id="quantity" type="number" min="0" step="1" value="1"></div>
+  <div><label>Prezzo (facoltativo, €)</label><input id="price" type="number" min="0" step="0.01"></div>
+  <div class="wide"><label>Fotografia dell'etichetta</label><input id="photo" type="file" accept="image/*" capture="environment"><div class="hint">Puoi scattare una foto o sceglierla dalla libreria. Il riconoscimento automatico dell'etichetta non è ancora attivo: i dati si inseriscono qui manualmente.</div><img id="preview" class="thumb hidden" alt="Anteprima etichetta"></div>
+  <div class="wide"><label>Note sul vino</label><textarea id="notes" placeholder="Profumi, gusto, abbinamenti, dove l'hai acquistato…"></textarea></div>
+ </div>
+ <p class="hint">I campi non obbligatori possono essere completati anche in seguito.</p>
+ <button class="primary" style="width:100%;margin-top:10px" type="submit">Salva vino</button>
+ </form>
+ </div></div>
+
+<div class="modal" id="consumeModal"><div class="sheet">
+ <div class="closebar"><h2>Registra una bottiglia bevuta</h2><button class="close" data-close="consumeModal">×</button></div>
+ <form id="consumeForm"><input type="hidden" id="consumeWineId">
+  <label>Data in cui l'hai bevuta</label><input type="date" id="drinkDate" required>
+  <label>Voto personale (da 1 a 10)</label><input type="number" id="rating" min="1" max="10" step="1" placeholder="Es. 8">
+  <label>Occasione / abbinamento</label><input id="occasion" placeholder="Cena, amici, carne…">
+  <label>Le tue impressioni</label><textarea id="drinkNotes" placeholder="Cosa ti è piaciuto? Lo ricompreresti?"></textarea>
+  <button class="primary" style="width:100%;margin-top:14px">Conferma: una bottiglia bevuta</button>
+ </form>
+ </div></div>
+<div class="modal" id="detailModal"><div class="sheet">
+ <div class="closebar"><h2>Dettaglio e storico</h2><button class="close" data-close="detailModal">×</button></div><div id="detailContent"></div>
+ </div></div>
+<script src="app.js"></script>
+</body></html>
