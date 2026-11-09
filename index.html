@@ -103,7 +103,6 @@ main{max-width:760px;margin:auto;padding:18px 16px}
   white-space:nowrap;
   font-weight:600;
   box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-  transition: all 0.2s ease;
 }
 .tab.active{background:var(--wine);color:#fff;border-color:var(--wine);box-shadow: 0 4px 12px rgba(72,20,32,0.3)}
 .toolbar{display:flex;gap:8px;margin-bottom:14px}
@@ -116,13 +115,10 @@ main{max-width:760px;margin:auto;padding:18px 16px}
   background:#fff;
   color:var(--ink);
   width:100%;
-  transition: border-color 0.2s ease;
 }
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--wine)}
 textarea{min-height:80px;resize:vertical}
 label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:14px 0 6px}
-button{cursor:pointer;touch-action:manipulation;transition: transform 0.1s ease, background 0.2s ease}
-button:active{transform: scale(0.98)}
+button{cursor:pointer;touch-action:manipulation}
 .primary{
   background: linear-gradient(135deg, var(--wine), var(--wine-light));
   color:#fff;
@@ -189,7 +185,7 @@ button:active{transform: scale(0.98)}
   z-index:5;
 }
 .bottom button{width:min(100%,720px);font-size:16px;padding:15px;border-radius:16px}
-.modal{position:fixed;inset:0;background:rgba(20,5,10,0.7);display:none;align-items:flex-end;justify-content:center;z-index:10;padding:12px;backdrop-filter:blur(4px)}
+.modal{position:fixed;inset:0;background:rgba(20,5,10,0.7);display:none;align-items:flex-end;justify-content:center;z-index:10;padding:12px}
 .modal.show{display:flex}
 .sheet{
   background:var(--cream);
@@ -222,33 +218,33 @@ button:active{transform: scale(0.98)}
 </header>
 <main>
  <nav class="tabs">
-  <button class="tab active" data-view="cellar">La nostra cantina</button>
-  <button class="tab" data-view="history">Vini bevuti</button>
-  <button class="tab" data-view="favorites">I nostri preferiti</button>
-  <button class="tab" data-view="backup">Backup</button>
+  <button class="tab active" onclick="switchView('cellar')">La nostra cantina</button>
+  <button class="tab" onclick="switchView('history')">Vini bevuti</button>
+  <button class="tab" onclick="switchView('favorites')">I nostri preferiti</button>
+  <button class="tab" onclick="switchView('backup')">Backup</button>
  </nav>
  <div id="listView">
-  <div class="toolbar"><input id="search" placeholder="Cerca vino, cantina, zona…"><select id="filterType" style="max-width:130px"><option value="">Tutti i tipi</option><option>Rosso</option><option>Bianco</option><option>Rosato</option><option>Spumante</option><option>Frizzante</option><option>Altro</option></select></div>
+  <div class="toolbar"><input id="search" placeholder="Cerca vino, cantina, zona…" oninput="render()"><select id="filterType" style="max-width:130px" onchange="render()"><option value="">Tutti i tipi</option><option>Rosso</option><option>Bianco</option><option>Rosato</option><option>Spumante</option><option>Frizzante</option><option>Altro</option></select></div>
   <div id="cards"></div>
  </div>
  <section id="backupView" class="hidden">
   <h2 class="section-title">I vostri dati, sempre al sicuro</h2>
-  <div class="card"><b>Esporta backup della cantina</b><p class="meta">Salva un file di backup con tutti i vini, quantità, foto e note di degustazione. Mandalo a Ale o Giada per allineare l'app.</p><button class="primary" id="exportBtn">Esporta backup</button></div>
-  <div class="card"><b>Ripristina un backup</b><p class="meta">Importa un backup creato in precedenza per aggiornare i dati con le ultime bottiglie inserite.</p><input type="file" id="importFile" accept="application/json"><button class="secondary danger" id="importBtn" style="margin-top:8px">Ripristina backup selezionato</button></div>
+  <div class="card"><b>Esporta backup della cantina</b><p class="meta">Salva un file di backup con tutti i vini, quantità, foto e note di degustazione. Mandalo a Ale o Giada per allineare l'app.</p><button class="primary" onclick="exportBackup()">Esporta backup</button></div>
+  <div class="card"><b>Ripristina un backup</b><p class="meta">Importa un backup creato in precedenza per aggiornare i dati con le ultime bottiglie inserite.</p><input type="file" id="importFile" accept="application/json"><button class="secondary danger" style="margin-top:8px" onclick="importBackup()">Ripristina backup selezionato</button></div>
   <p class="hint">I dati risiedono nel browser del vostro dispositivo. Esportate un backup regolarmente per condividere le modifiche tra di voi!</p>
  </section>
 </main>
-<div class="bottom"><button class="primary" id="addBtn">＋ Aggiungi un vino</button></div>
+<div class="bottom"><button class="primary" onclick="openForm()">＋ Aggiungi un vino</button></div>
 
 <div class="modal" id="wineModal"><div class="sheet">
- <div class="closebar"><h2 id="formTitle">Aggiungi un vino</h2><button class="close" data-close="wineModal">×</button></div>
- <form id="wineForm">
+ <div class="closebar"><h2 id="formTitle">Aggiungi un vino</h2><button class="close" onclick="closeModal('wineModal')">×</button></div>
+ <form id="wineForm" onsubmit="handleWineSubmit(event)">
  <input type="hidden" id="wineId">
  
  <div style="background:var(--gold-light);border:1px solid #e2cfb4;border-radius:14px;padding:12px 14px;margin-bottom:14px">
    <b style="color:var(--wine)">✨ Assistente AI per specifiche tecniche</b>
    <p class="meta" style="margin:4px 0 10px;color:#5a4936">Inserisci nome e cantina, poi clicca qui per copiare la richiesta e riceverne in chat temperatura, decanter e abbinamenti.</p>
-   <button type="button" class="secondary" id="aiHelperBtn" style="background:#fff;font-weight:600;border-color:#d4bf9f">Copia testo per chiedere all'AI</button>
+   <button type="button" class="secondary" style="background:#fff;font-weight:600;border-color:#d4bf9f" onclick="copyAiHelper()">Copia testo per chiedere all'AI</button>
  </div>
 
  <div class="grid">
@@ -267,7 +263,7 @@ button:active{transform: scale(0.98)}
   <div><label>Uso del decanter</label><select id="decanter"><option value="">Da scegliere</option><option>Consigliato</option><option>Necessario</option><option>Non necessario</option></select></div>
   <div class="wide"><label>Momento ideale / Consigli di servizio</label><input id="servingAdvice" placeholder="Es. Aprire 1h prima, bicchiere ampio..."></div>
   
-  <div class="wide"><label>Fotografia dell'etichetta</label><input id="photo" type="file" accept="image/*" capture="environment"><div class="hint">Puoi scattare una foto o sceglierla dalla libreria.</div><img id="preview" class="thumb hidden" alt="Anteprima etichetta"></div>
+  <div class="wide"><label>Fotografia dell'etichetta</label><input id="photo" type="file" accept="image/*" capture="environment" onchange="handlePhoto(this)"><div class="hint">Puoi scattare una foto o sceglierla dalla libreria.</div><img id="preview" class="thumb hidden" alt="Anteprima etichetta"></div>
   <div class="wide"><label>Note generali sul vino</label><textarea id="notes" placeholder="Profumi, gusto, abbinamenti consigliati, luogo d'acquisto…"></textarea></div>
  </div>
  <p class="hint">I campi non obbligatori possono essere completati anche in seguito.</p>
@@ -276,8 +272,8 @@ button:active{transform: scale(0.98)}
  </div></div>
 
 <div class="modal" id="consumeModal"><div class="sheet">
- <div class="closebar"><h2>Registra una bottiglia bevuta</h2><button class="close" data-close="consumeModal">×</button></div>
- <form id="consumeForm"><input type="hidden" id="consumeWineId">
+ <div class="closebar"><h2>Registra una bottiglia bevuta</h2><button class="close" onclick="closeModal('consumeModal')">×</button></div>
+ <form id="consumeForm" onsubmit="handleConsumeSubmit(event)"><input type="hidden" id="consumeWineId">
   <label>Data in cui l'avete bevuta</label><input type="date" id="drinkDate" required>
   <label>Voto personale (da 1 a 10)</label><input type="number" id="rating" min="1" max="10" step="1" placeholder="Es. 9">
   <label>Occasione / abbinamento</label><input id="occasion" placeholder="Cena insieme, fiorentina, anniversario…">
@@ -287,7 +283,8 @@ button:active{transform: scale(0.98)}
  </div></div>
 
 <div class="modal" id="detailModal"><div class="sheet">
- <div class="closebar"><h2>Dettaglio e storico</h2><button class="close" data-close="detailModal">×</button></div><div id="detailContent"></div>
+ <div class="closebar"><h2>Dettaglio e storico</h2><button class="close" onclick="closeModal('detailModal')">×</button></div><div id="detailContent"></div>
  </div></div>
+
 <script src="app.js"></script>
 </body></html>
