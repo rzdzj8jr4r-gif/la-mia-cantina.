@@ -1,10 +1,10 @@
 {
-  "name": "La Mia Cantina",
+  "name": "La Cantina di Ale e Giada",
   "short_name": "Cantina",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f7f1e8",
-  "theme_color": "#541d2b",
-  "description": "La tua cantina personale e il diario delle degustazioni."
+  "background_color": "#f8f3ed",
+  "theme_color": "#3b111a",
+  "description": "La Cantina di Ale e Giada nella Willy’s Home - Collezione e degustazioni."
 }
