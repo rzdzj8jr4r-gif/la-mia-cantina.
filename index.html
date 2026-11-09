@@ -26,7 +26,7 @@
   --red:#9c2f37;
   --shadow: 0 8px 24px rgba(42,10,18,0.08);
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
   margin:0;
   background:var(--cream);
@@ -121,7 +121,7 @@ main{max-width:760px;margin:auto;padding:18px 16px}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--wine)}
 textarea{min-height:80px;resize:vertical}
 label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:14px 0 6px}
-button{cursor:pointer;transition: transform 0.1s ease, background 0.2s ease}
+button{cursor:pointer;touch-action:manipulation;transition: transform 0.1s ease, background 0.2s ease}
 button:active{transform: scale(0.98)}
 .primary{
   background: linear-gradient(135deg, var(--wine), var(--wine-light));
@@ -179,7 +179,7 @@ button:active{transform: scale(0.98)}
 .bottom{
   position:fixed;
   bottom:0;left:0;right:0;
-  background:rgba(248,243,237,0.92);
+  background:rgba(248,243,237,0.95);
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
   border-top:1px solid var(--line);
@@ -194,7 +194,7 @@ button:active{transform: scale(0.98)}
 .sheet{
   background:var(--cream);
   width:min(100%,650px);
-  max-height:84vh;
+  max-height:82vh;
   overflow:auto;
   border-radius:26px;
   padding:20px;
@@ -282,7 +282,7 @@ button:active{transform: scale(0.98)}
   <label>Voto personale (da 1 a 10)</label><input type="number" id="rating" min="1" max="10" step="1" placeholder="Es. 9">
   <label>Occasione / abbinamento</label><input id="occasion" placeholder="Cena insieme, fiorentina, anniversario…">
   <label>Le vostre impressioni / Commento</label><textarea id="drinkNotes" placeholder="Cosa vi è piaciuto? Note olfattive/gustative, lo ricomprereste?"></textarea>
-  <button class="primary" style="width:100%;margin-top:14px">Conferma: una bottiglia bevuta</button>
+  <button class="primary" style="width:100%;margin-top:14px" type="submit">Conferma: una bottiglia bevuta</button>
  </form>
  </div></div>
 
